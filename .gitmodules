@@ -1,0 +1,4 @@
+[submodule "unikp"]
+	path = unikp
+	url = git@github.com:csiro-internal/emmai-unikp.git
+	branch = main

@@ -1,0 +1,95 @@
+---
+# All paths are relative to this file
+sbml_model: "carved_PAO1.xml"
+output_file_path: "outputs"
+protein_file_path: "protein.faa"
+
+species: "Pseudomonas aeruginosa"
+strain: "ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1"
+chem_spider_key: ""
+
+transporters:
+  - "transport"
+  - "symporter"
+  - "diffusion"
+  - "antiport"
+  - "tranposrt"
+
+media:
+  EX_cd2_e: 1000.0
+  EX_co2_e: 1000.0
+  EX_cobalt2_e: 1000.0
+  EX_cu2_e: 1000.0
+  EX_fe2_e: 1000.0
+  EX_fe3_e: 1000.0
+  EX_h_e: 1000.0
+  EX_h2o_e: 1000.0
+  EX_k_e: 1000.0
+  EX_mg2_e: 1000.0
+  EX_mn2_e: 1000.0
+  EX_na1_e: 1000.0
+  EX_nh4_e: 1000.0
+  EX_o2_e: 1000.0
+  EX_pi_e: 1000.0
+  EX_so4_e: 1000.0
+  EX_zn2_e: 1000.0
+  EX_gal_e: 1000.0
+
+bounds:
+  - -1.26
+  - 0.0
+
+excluded_reactions:
+  - "Biomass reaction"
+  - "R_ATPM"
+
+cofactors:
+  - "ATP C10H12N5O13P3"
+  - "H+"
+  - "Nicotinamide adenine dinucleotide phosphate - reduced"
+  - "H2O H2O"
+  - "Appolipoprotein"
+  - "CMP C9H12N3O8P"
+  - "Sodium"
+  - "Nicotinamide adenine dinucleotide"
+  - "Nicotinamide adenine dinucleotide - reduced"
+  - "O2 O2"
+  - "FMN C17H19N4O9P"
+  - "Ubiquinol-8"
+  - "Coenzyme A"
+  - "Acetyl-CoA"
+  - "GTP C10H12N5O14P3"
+  - "Flavin adenine dinucleotide oxidized"
+  - "Flavin adenine dinucleotide reduced"
+  - "UDP C9H11N2O12P2"
+  - "Acyl carrier protein"
+  - "AMP C10H12N5O7P"
+  - "ITP C10H11N4O14P3"
+  - "Pyridoxal 5'-phosphate"
+  - "Nicotinamide adenine dinucleotide phosphate"
+  - "Reduced FMN"
+  - "Reduced riboflavin"
+  - "Iron (Fe3+)"
+  - "Fe2+ mitochondria"
+  - "Phosphate"
+  - "Ubiquinone-8"
+  - "Menaquinone 8"
+  - "Ammonium"
+  - "CO2 CO2"
+  - "IMP C10H11N4O8P"
+  - "Bicarbonate"
+  - "Reduced glutathione"
+  - "Tungsten binding cofactor"
+  - "UTP C9H11N2O15P3"
+  - "Hydrogen sulfide"
+  - "Menaquinol 8"
+  - "Reduced thioredoxin"
+  - "Hydrogen peroxide"
+  - "Nitric oxide"
+  - "Hydrogen"
+  - "ADP C10H12N5O10P2"
+  - "Diphosphate"
+  - "UMP C9H11N2O9P"
+  - "GMP C10H12N5O8P"
+  - "Riboflavin C17H20N4O6"
+  - "GDP C10H12N5O11P2"

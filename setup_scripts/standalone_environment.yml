@@ -1,0 +1,24 @@
+name: ecgems
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - python==3.9
+  - cmake
+  - swig
+  - scikit-learn==0.24.2
+  - diamond
+  - jupyterlab
+  - ipykernel
+  - git-lfs
+  - rsync
+  - carveme
+  - pip
+  - httpx<0.28.0
+  - cobra
+  - pubchempy
+  - chemspipy
+  - biopython
+  - PyYAML
+  - huggingface_hub
