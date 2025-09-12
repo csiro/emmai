@@ -29,7 +29,7 @@ To use the contents of this repository, you will need the following:
 1. Clone the repository:
 
    ```bash
-   git clone --recurse-submodules git@github.com:csiro-internal/emmai-unikp.git
+   git clone --recurse-submodules git@github.com:csiro-internal/emmai.git
    ```
 
 2. There are two installation scripts provided in the setup_scripts directory. 1
