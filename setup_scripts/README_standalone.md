@@ -24,7 +24,7 @@ Make sure you have the following installed on your system:
 ### Cloning the repository
 
 ```bash
-git clone --recurse-submodules https://bitbucket.csiro.au/scm/ecgem/ecgems_pipeline.git
+git clone --recurse-submodules https://github.com/csiro-internal/emmai.git
 ```
 
 ### Setting Up the Environment
@@ -32,7 +32,8 @@ git clone --recurse-submodules https://bitbucket.csiro.au/scm/ecgem/ecgems_pipel
 To set up the environment, follow these steps:
 
 #### Step 1: Update the PROJECT_ROOT path
-Navigate to the `setup_scripts` directory if not already there and edit the `config.sh` file to set your project root path. 
+
+Navigate to the `setup_scripts` directory if not already there and edit the `config.sh` file to set your project root path.
 For example:
 
 ```env
@@ -40,6 +41,7 @@ PROJECT_ROOT=/home/<your_username>/ecgems
 ```
 
 #### Step 2: Run the `standalone_install.sh` Script
+
 Run the `standalone_install.sh` script to set up the environment:
 
 ```bash

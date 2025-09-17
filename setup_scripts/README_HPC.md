@@ -8,10 +8,12 @@ and setting up the directory structure.
 
 - `hpc_install.sh`: Automates the setup of the environment, including creating
   directories, cloning repositories, and downloading data.
-- `hpc_cpu_requirements.txt`: Environment configuration of the Conda CPU
+- `hpc_cpu_requirements.txt`: Environment configuration of the CONDA CPU
   environment.
-- `hpc_gpu_requirements.txt`: Environment configuration of the Conda GPU
+- `hpc_gpu_requirements.txt`: Environment configuration of the CONDA GPU
   environment.
+- `config.sh`: Environment variables that will be used by the Installation
+  shell scripts.
 
 ## Installation
 
@@ -19,7 +21,13 @@ and setting up the directory structure.
 
 Make sure you have the following installed on your system:
 
-- Conda or Mamba
+- CONDA or Mamba
+
+### Cloning the repository
+
+```bash
+git clone --recurse-submodules https://github.com/csiro-internal/emmai.git
+```
 
 ### Setting Up the Environment
 
@@ -55,7 +63,7 @@ bash hpc_install.sh
 This script will:
 
 1. Set up the directory structure.
-2. Create and activate the Conda environment
+2. Create and activate the CONDA environment
 3. Install additional packages using pip and create a Jupyter kernel.
 4. Download required model data files.
 
@@ -66,9 +74,7 @@ env.sh file in the PROJECT_ROOT directory. The below assumes you placed your
 PROJECT_ROOT in your home directory.
 
 ```bash
-source /home/<your_username>/ecgems/env.sh
-```
-```
+source /home/<your_username>/emmai/env.sh
 ```
 
 ## Notes
