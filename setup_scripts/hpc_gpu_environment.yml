@@ -1,0 +1,26 @@
+name: emmai_gpu
+channels:
+- conda-forge
+- bioconda
+- nodefaults
+dependencies:
+- python=3.9
+- cmake
+- swig
+- scikit-learn=0.24.2
+- numpy
+- pandas
+- tqdm
+- rdkit
+- transformers
+- SentencePiece
+- scikit-learn
+- openpyxl
+- ipykernel
+- huggingface_hub
+- pip
+- pip:
+  - torch
+  - torchvision
+  - torchaudio
+  - -r ../unikp/requirements.txt

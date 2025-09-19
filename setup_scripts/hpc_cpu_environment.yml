@@ -1,0 +1,17 @@
+name: emmai_cpu
+channels:
+- conda-forge
+- bioconda
+- nodefaults
+dependencies:
+- python=3.9
+- scikit-learn=0.24.2
+- cobra
+- requests
+- pubchempy
+- chemspipy
+- biopython
+- PyYAML
+- ipykernel
+- huggingface_hub
+- carveme

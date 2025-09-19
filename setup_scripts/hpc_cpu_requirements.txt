@@ -1,9 +1,0 @@
-cobra
-requests
-pubchempy
-chemspipy
-biopython
-PyYAML
-ipykernel
-huggingface_hub
-carveme

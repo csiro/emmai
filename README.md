@@ -1,28 +1,19 @@
-# ecGEMs_pipeline
+# EMMAi
 
 ## Description
 
-The `ecGEMs_pipeline` repository contains a collection of IPython notebooks,
-Python scripts, and SLURM batch files designed to facilitate the ecGEMs
-computational workflow.
+The `emmai` repository contains a collection of Jupyter notebooks, Python scripts, and Slurm batch files designed to facilitate the EMMAi computational workflow.
 
 ## Contents
 
-- **IPython Notebooks**: Interactive notebooks for data analysis and visualization.
-- **Python Scripts**: Standalone scripts for various computational tasks. These
-for the most part duplicate the code in the IPython notebooks.
-- **SLURM Batch Files**: Scripts to manage and execute jobs on SLURM-based
-high-performance computing clusters. These execute the Python scripts after
-activating a CONDA environment.
+- **Jupyter Notebooks**: Interactive notebooks for data analysis and visualization.
+- **Python Scripts**: Standalone scripts for various computational tasks. These for the most part duplicate the code in the Jupyter notebooks.
+- **Slurm Batch Files**: Scripts to manage and execute jobs on Slurm-based high-performance computing clusters. These execute the Python scripts after activating a Conda environment.
 
 ## Requirements
 
 To use the contents of this repository, you will need the following:
-
-- Python 3.9
-- Jupyter Notebook
-- SLURM workload manager (for batch files)
-- MAMBA (or CONDA if you prefer)
+- Mamba (or Conda if you prefer)
 
 ## Installation
 
@@ -32,21 +23,23 @@ To use the contents of this repository, you will need the following:
    git clone --recurse-submodules git@github.com:csiro-internal/emmai.git
    ```
 
-2. There are two installation scripts provided in the setup_scripts directory. 1
-One for HPC systems with GPU and CPU clusters - [see the detailed README](setup_scripts/README_HPC.md) and
-one for standalone systems - [see the detailed README](setup_scripts/README_standalone.md)
+2. There are two installation scripts provided in the setup_scripts directory depending on where you intend to run the pipeline.
+- HPC systems with GPU and CPU clusters - [see the detailed README](setup_scripts/README_HPC.md)
+- Standalone systems - [see the detailed README](setup_scripts/README_standalone.md)
 
 ## Executing the pipeline
 
-1. After following the installation guidelines you can choose to execute the
-pipeline in 1 of three ways, or a combination of the three - if you know what
-you are doing.
+After following the installation guides you can choose to execute the
+pipeline in one of three ways, or a combination of the three - if you understand how each method works.
 
-    i. By running the Jupyter notebooks sequentially starting with:
+1. By running the Jupyter notebooks sequentially starting with:
+    ```
     notebooks/1_data_retrieval.ipynb
+    ```
 
-    ii. By executing the python scripts sequentially starting with:
+2. By executing the python scripts sequentially starting with:
+    ```
     python_scripts/1_data_retrieval.py
+    ```
 
-    iii. Or by running a combination of the batch scripts in hpc_scripts. See
-    [See the HPC README](hpc_scripts/README.md) for details.
+3. Or by running a combination of the batch scripts in hpc_scripts. See [See the HPC README](hpc_scripts/README.md) for details.

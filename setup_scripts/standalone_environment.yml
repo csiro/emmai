@@ -1,4 +1,4 @@
-name: ecgems
+name: emmai
 channels:
   - conda-forge
   - bioconda
@@ -22,3 +22,5 @@ dependencies:
   - biopython
   - PyYAML
   - huggingface_hub
+  - pip:
+    - -r ../unikp/requirements.txt

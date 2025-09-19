@@ -15,7 +15,7 @@ SPECIES3=iJO1366
 declare -A JOBS
 
 # CHANGE THIS
-ANALYSES_ROOT=/scratch3/ben324/ECGEMS/analyses
+ANALYSES_ROOT=/scratch3/<username>/emmai/analyses
 
 export INPUTS=${ANALYSES_ROOT}/${SPECIES1}
 # Assume we are on the CPU cluster in this first set of jobs each job is dependent on the previous one finishing
