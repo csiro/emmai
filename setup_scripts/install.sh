@@ -2,9 +2,9 @@
 set -eu
 trap 'echo "Script interrupted"; exit 1' INT TERM
 
-PROJECT_ROOT=/scratch3/wat440/emmai_project
-CPU_HOST=petrichor-i3
-GPU_HOST=virga-i2
+PROJECT_ROOT=/home/<username>/emmai_project
+CPU_HOST=petrichor-login
+GPU_HOST=virga-login
 CPU_CONDA_MODULE="miniconda3/23.3.1"
 GPU_CONDA_MODULE="miniconda3/23.5.2"
 ANALYSIS_ROOT="${PROJECT_ROOT}/analyses"
