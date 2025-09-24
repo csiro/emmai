@@ -1,9 +1,10 @@
-cobra
+cobra==0.29.1
+numpy==2.0.2
 requests
 pubchempy
 chemspipy
-biopython
+biopython==1.85
 PyYAML
 ipykernel
 huggingface_hub
-carveme
+carveme=1.6.4

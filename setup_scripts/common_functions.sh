@@ -29,7 +29,10 @@ setup_test_data() {
     local analysis_root=$2
 
     log "Setting up test data"
-    cp -R "$script_dir/../test/"* "$analysis_root"
+    if [ ! -d "$analysis_root" ]; then
+	    mkdir -p "$analysis_root"
+    fi
+    cp -r "$script_dir"/../test/* "$analysis_root"
 }
 
 # Common kernel setup
