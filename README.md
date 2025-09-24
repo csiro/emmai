@@ -1,9 +1,9 @@
-# ecGEMs_pipeline
+# EMMAi pipeline
 
 ## Description
 
-The `ecGEMs_pipeline` repository contains a collection of IPython notebooks,
-Python scripts, and SLURM batch files designed to facilitate the ecGEMs
+The `EMMAi` repository contains a collection of IPython notebooks,
+Python scripts, and SLURM batch files designed to facilitate the EMMAi
 computational workflow.
 
 ## Contents

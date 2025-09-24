@@ -34,36 +34,35 @@ setup_hpc_cpu_environment() {
 HOST=$(hostname)
 if [ "$HOST" == "$CPU_HOST" ]; then
     module purge
-    module load miniconda3/23.3.1
-    . ${MINICONDA3_HOME}/etc/profile.d/conda.sh
-    . ${MINICONDA3_HOME}/etc/profile.d/mamba.sh
+    module load miniforge3
+    . ${MINIFORGE3_HOME}/etc/profile.d/conda.sh
+    . ${MINIFORGE3_HOME}/etc/profile.d/mamba.sh
     setup_conda_config "$CONDA_ROOT"
     validate_environment || exit 1
     if ! check_environment "${ENV_ID}_cpu"; then
         setup_hpc_cpu_environment "$ENV_ID" "$PYTHON_VERSION"
         mamba activate ${ENV_ID}_cpu
         setup_jupyter_kernel "$ENV_ID_cpu" "$ENV_ID_cpu"
-        exit
-        download_model_data $UNIKP
         setup_test_data "$SCRIPT_DIR" "$ANALYSIS_ROOT"
     fi
 fi
 if [ "$HOST" == "$GPU_HOST" ]; then
     module purge
-    module load miniconda3/23.5.2
-    . ${MINICONDA3_HOME}/etc/profile.d/conda.sh
-    . ${MINICONDA3_HOME}/etc/profile.d/mamba.sh
+    module load miniforge3
+    . ${MINIFORGE3_HOME}/etc/profile.d/conda.sh
+    . ${MINIFORGE3_HOME}/etc/profile.d/mamba.sh
     setup_conda_config "$CONDA_ROOT"
     validate_environment || exit 1
     if ! check_environment "${ENV_ID}_gpu"; then
         setup_hpc_gpu_environment "$ENV_ID" "$PYTHON_VERSION" "$SCIKIT_LEARN_VERSION"
         mamba activate ${ENV_ID}_gpu
-        pip install build_vocab
+        #pip install build_vocab
         setup_jupyter_kernel "$ENV_ID_gpu" "$ENV_ID_gpu"
+        mamba deactivate
     fi
+    mamba activate ${ENV_ID}_gpu
+    download_model_data "$UNIKP"
 fi
-
-download_model_data "$UNIKP"
 
 cat <<EOF >${PROJECT_ROOT}/env.sh
 #!/bin/bash
@@ -74,9 +73,9 @@ source "${SCRIPT_DIR}/config.sh"
 # export INPUTS=\${ANALYSIS_ROOT}/analyses/PA01
 
 module purge
-module load miniconda3/23.3.1 diamond
-. \${MINICONDA3_HOME}/etc/profile.d/conda.sh
-. \${MINICONDA3_HOME}/etc/profile.d/mamba.sh
+module load miniforge3
+. \${MINIFORGE3_HOME}/etc/profile.d/conda.sh
+. \${MINIFORGE3_HOME}/etc/profile.d/mamba.sh
 
 HOST=\$(hostname)
 if [ "\$HOST" == "\$CPU_HOST" ]; then

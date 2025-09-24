@@ -1,6 +1,6 @@
-# ECGEMS HPC Environment Setup
+# EMMAi HPC Environment Setup
 
-This directory contains scripts to set up the `ecgems` HPC environment,
+This directory contains scripts to set up the `emmai` HPC environment,
 including installing necessary dependencies, cloning required repositories,
 and setting up the directory structure.
 
@@ -19,9 +19,9 @@ and setting up the directory structure.
 
 ### Prerequisites
 
-Make sure you have the following installed on your system:
+Make sure you have the following installed on your system and in your path:
 
-- CONDA or Mamba
+- CONDA or Mamba: module load miniforge3
 
 ### Cloning the repository
 
@@ -40,7 +40,7 @@ hosts. Note if you only have a GPU cluster you can set the same hostname for
 both of these variables. For example:
 
 ```env
-export PROJECT_ROOT=/home/<your_username>/ecgems
+export PROJECT_ROOT=/home/<your_username>/emmai
 export CPU_HOST=petrichor-login
 export GPU_HOST=virga-login
 ```
