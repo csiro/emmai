@@ -14,9 +14,6 @@ SPECIES2=iML1515
 SPECIES3=iJO1366
 declare -A JOBS
 
-# CHANGE THIS
-ANALYSES_ROOT=/scratch3/ben324/ECGEMS/analyses
-
 export INPUTS=${ANALYSES_ROOT}/${SPECIES1}
 # Assume we are on the CPU cluster in this first set of jobs each job is dependent on the previous one finishing
 jobs["${SPECIES1}_1"]=$(sbatch --job-name=${SPECIES1}-IO sbatch_data_retrieval.sh | awk '{ print $4 }')

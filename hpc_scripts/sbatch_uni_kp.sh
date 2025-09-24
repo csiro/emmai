@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=ecGEMs_uni_kp          # Job name
+#SBATCH --job-name=emmai_uni_kp          # Job name
 #SBATCH --output=logs/SLURM-%x.%j.out     # Standard output and error log
 #SBATCH --error=logs/SLURM-%x.%j.err      # Error log
 #SBATCH --nodes=1                         # Run on a single Node

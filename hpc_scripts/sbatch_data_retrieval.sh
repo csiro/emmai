@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=ecGEMs_dataretrieval   # Job name
+#SBATCH --job-name=emmai_dataretrieval   # Job name
 #SBATCH --output=logs/SLURM-%x.%j.out     # Standard output and error log
 #SBATCH --error=logs/SLURM-%x.%j.err      # Error log
 #SBATCH --nodes=1                         # Run on a single Node
