@@ -76,7 +76,7 @@ source "${SCRIPT_DIR}/config.sh"
 # Change the INPUTS variable to the directory where your inputs.yml file diamond
 # model file and your optional protein fasta file are located.
 # Do not set this if submitting multiple analyses to the cluster
-export INPUTS=\${ANALYSIS_ROOT}/PA01
+export INPUTS=\${ANALYSIS_ROOT}/PAO1
 
 module purge
 module load miniforge3
