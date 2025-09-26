@@ -33,6 +33,7 @@ setup_hpc_cpu_environment() {
 # Setup based on host
 HOST=$(hostname)
 if [ "$HOST" == "$CPU_HOST" ]; then
+    cd ${SCRIPT_DIR}/../python_scripts && gunzip ../test/data/SMILES_reference_DB.csv.gz
     module purge
     module load miniforge3
     MAMBA_EXE=$(which mamba)
