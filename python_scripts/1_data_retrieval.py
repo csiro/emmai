@@ -16,8 +16,15 @@ from typing import List
 
 DEBUG = False
 
-pubchem_columns = ["cid", "cmpdname", "cmpdsynonym", "smiles"]
-pubchemdb = pd.read_csv("PubChem_compound_all_pathways.csv", usecols=pubchem_columns)
+# pubchem_columns = ["cid", "cmpdname", "cmpdsynonym", "smiles"]
+# pubchemdb = pd.read_csv("PubChem_compound_all_pathways.csv", usecols=pubchem_columns)
+smiles_ref_db_columns: list[str] = [
+    "kegg_metabolite_ID",
+    "Metabolite_aliases",
+    "BiGG_metabolite_name",
+    "SMILES",
+]
+smiles_db = pd.read_csv("SMILES_reference_DB.csv", usecols=smiles_ref_db_columns)
 
 inputs_path = ""
 
@@ -127,34 +134,20 @@ def process_futures(
 
 def get_smiles_from_csv_apis(name):
     try:
-        # First, search in the 'cmpdname' column for an exact match
-        result = pubchemdb[pubchemdb["cmpdname"] == name]
-        # If a match is found, return the 'smiles' for the match
-        if not result.empty:
-            try:
-                cid = result["cid"].values[0]
-                smiles = result["smiles"].values[0]
-                if DEBUG:
-                    print(f"CSV cid: {cid} name: {name} smile: {smiles}")
-                return smiles
-            except Exception as e:
-                print(f"Error while processing 'cmpdname' match: {e}")
-    except Exception as e:
-        print(f"Error while searching 'cmpdname': {e}")
-
-    try:
         # Search in 'cmpdsynonym' column using vectorized operations for speed
-        mask = pubchemdb["cmpdsynonym"].str.contains(
+        mask = smiles_db["Metabolite_aliases"].str.contains(
             rf"(?:^|\|){re.escape(name)}(?:\||$)", na=False, regex=True
         )
-        result = pubchemdb[mask]
+        result = smiles_db[mask]
         # If a match is found, return the 'smiles' for the match
         if not result.empty:
             try:
-                cid = result["cid"].values[0]
-                smiles = result["smiles"].values[0]
+                keggid = result["kegg_metabolite_ID"].values[0]
+                smiles = result["SMILES"].values[0]
                 if DEBUG:
-                    print(f"SYNONYM cid: {cid} name: {name} smile: {smiles}")
+                    print(
+                        f"DEBUG: SYNONYM keggid: {keggid} name: {name} smile: {smiles}"
+                    )
                 return smiles
             except Exception as e:
                 print(f"Error while processing 'cmpdsynonym' match: {e}")
@@ -168,7 +161,7 @@ def get_smiles_from_csv_apis(name):
             try:
                 smiles = compounds[0].isomeric_smiles
                 if DEBUG:
-                    print(f"API name: {name} smile: {smiles}")
+                    print(f"DEBUG: API name: {name} smile: {smiles}")
                 return smiles
             except Exception as e:
                 print(f"Error while processing PubChem API response: {e}")
@@ -326,11 +319,12 @@ def process_metabolite_model(m):
         try:
             # Looking for corresponding metabolite smiles in PubChem CSV / API and ChemSpider
             smiles = get_smiles_from_csv_apis(name)
-            if smiles is None:
-                smiles = "Compound not found"
-            elif smiles == "":
-                print("NAN smiles")
-                smiles = "Compound not found"
+            if DEBUG:
+                print(f"DEBUG: type(smiles)={type(smiles)}, smiles={smiles}")
+            # Need to cater for different returns
+            smiles = "Compound not found" if pd.isna(smiles) else str(smiles).strip()
+            if DEBUG:
+                print(f"DEBUG: name {name} smiles {smiles}")
 
             # Collect data for batch update
             return {"metabolite_id": m.id, "name": m.name, "smiles": smiles}
