@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
+SMILES_DB=/scratch3/projects/ecgems/DATABASES/SMILES_reference_DB.csv
 source "${SCRIPT_DIR}/config.sh"
 source "${SCRIPT_DIR}/common_functions.sh"
 
@@ -33,7 +34,12 @@ setup_hpc_cpu_environment() {
 # Setup based on host
 HOST=$(hostname)
 if [ "$HOST" == "$CPU_HOST" ]; then
-    cd ${SCRIPT_DIR}/../python_scripts && gunzip /scratch3/projects/ecgems/DATABASES/SMILES_reference_DB.csv.gz
+    if [ -f ${SMILES_DB} ];then
+        cp ${SMILES_DB ${SCRIPT_DIR}/../python_scripts
+    else
+        echo "No SMILES reference Database found."
+        echo "Copy SMILES_reference_DB.csv to the Python scripts directory"
+    fi
     module purge
     module load miniforge3
     MAMBA_EXE=$(which mamba)
