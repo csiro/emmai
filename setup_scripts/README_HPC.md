@@ -21,7 +21,7 @@ and setting up the directory structure.
 
 Make sure you have the following installed on your system and in your path:
 
-- CONDA or Mamba: module load miniforge3
+- Miniforge3 providing the Conda and mamba executables.
 
 ### Cloning the repository
 
