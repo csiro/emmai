@@ -34,8 +34,8 @@ setup_hpc_cpu_environment() {
 # Setup based on host
 HOST=$(hostname)
 if [ "$HOST" == "$CPU_HOST" ]; then
-    if [ -f ${SMILES_DB} ];then
-        cp ${SMILES_DB ${SCRIPT_DIR}/../python_scripts
+    if [ -f ${SMILES_DB} ]; then
+        cp ${SMILES_DB} ${SCRIPT_DIR}/../python_scripts
     else
         echo "No SMILES reference Database found."
         echo "Copy SMILES_reference_DB.csv to the Python scripts directory"
