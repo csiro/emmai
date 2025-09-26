@@ -35,9 +35,10 @@ To set up the environment, follow these steps:
 
 #### Step 1: Update the PROJECT_ROOT path
 
-Edit the `config.sh` file to set your project root path and your CPU and GPU
-hosts. Note if you only have a GPU cluster you can set the same hostname for
-both of these variables. For example:
+Inside the setup_scripts directory, edit the `config.sh` file to set your
+project root path and your CPU and GPU hosts. Note if you only have a
+GPU cluster you can set the same hostname for both of these variables.
+For example:
 
 ```env
 export PROJECT_ROOT=/home/<your_username>/emmai
