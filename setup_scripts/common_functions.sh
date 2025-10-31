@@ -26,13 +26,13 @@ setup_conda_config() {
 # Common test data setup
 setup_test_data() {
     local script_dir=$1
-    local analysis_root=$2
+    local analyses_root=$2
 
     log "Setting up test data"
-    if [ ! -d "$analysis_root" ]; then
-	    mkdir -p "$analysis_root"
+    if [ ! -d "$analyses_root" ]; then
+	    mkdir -p "$analyses_root"
     fi
-    cp -r "$script_dir"/../test/* "$analysis_root"
+    cp -r "$script_dir"/../test/* "$analyses_root"
 }
 
 # Common kernel setup

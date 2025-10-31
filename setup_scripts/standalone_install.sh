@@ -32,7 +32,7 @@ setup_conda_config "$CONDA_ROOT"
 validate_environment || exit 1
 
 # Create analyses directory
-mkdir -p "$PROJECT_ROOT" "$ANALYSIS_ROOT"
+mkdir -p "$PROJECT_ROOT" "$ANALYSES_ROOT"
 
 # Setup environment
 if ! check_environment "$CONDA_ROOT"; then

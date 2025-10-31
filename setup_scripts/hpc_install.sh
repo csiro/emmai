@@ -48,7 +48,7 @@ if [ "$HOST" == "$CPU_HOST" ]; then
     setup_conda_config "$CONDA_ROOT"
     validate_environment || exit 1
     if ! check_environment "${ENV_ID}_cpu"; then
-        setup_test_data "$SCRIPT_DIR" "$ANALYSIS_ROOT"
+        setup_test_data "$SCRIPT_DIR" "$ANALYSES_ROOT"
         setup_hpc_cpu_environment "$ENV_ID" "$PYTHON_VERSION"
         mamba activate ${ENV_ID}_cpu
         setup_jupyter_kernel "$ENV_ID_cpu" "$ENV_ID_cpu"
@@ -76,7 +76,7 @@ source "${SCRIPT_DIR}/config.sh"
 # Change the INPUTS variable to the directory where your inputs.yml file diamond
 # model file and your optional protein fasta file are located.
 # Do not set this if submitting multiple analyses to the cluster
-export INPUTS=\${ANALYSIS_ROOT}/PAO1
+export INPUTS=\${ANALYSES_ROOT}/PAO1
 
 module purge
 module load miniforge3

@@ -1,10 +1,10 @@
 #!/bin/bash
 #
 FAST_FILE_SYSTEM=$SCRATCH3DIR
-export PROJECT_ROOT=$FAST_FILE_SYSTEM/EMMAI
+export PROJECT_ROOT=$FAST_FILE_SYSTEM/EMMAi
 export CPU_HOST=petrichor-login
 export GPU_HOST=virga-login
-export ANALYSIS_ROOT=${PROJECT_ROOT}/analyses
+export ANALYSES_ROOT=${PROJECT_ROOT}/analyses
 export CONDA_ROOT=${PROJECT_ROOT}/conda
 export ENV_ID=emmai
 export PYTHON_VERSION=3.9

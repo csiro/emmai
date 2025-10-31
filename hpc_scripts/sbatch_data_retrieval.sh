@@ -5,7 +5,7 @@
 #SBATCH --nodes=1                         # Run on a single Node
 #SBATCH --ntasks-per-node=1               # Number of CPU cores per task
 #SBATCH --mem=1GB                         # Total memory limit
-#SBATCH --time=00:45:00                   # Time limit hrs:min:sec
+#SBATCH --time=01:45:00                   # Time limit hrs:min:sec
 #SBATCH --partition=io
 
 # set up environment
