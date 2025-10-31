@@ -46,6 +46,7 @@ you are doing.
     notebooks/1_data_retrieval.ipynb
 
     ii. By executing the python scripts sequentially starting with:
+    source env.sh
     python_scripts/1_data_retrieval.py
 
     iii. Or by running a combination of the batch scripts in hpc_scripts. See

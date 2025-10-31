@@ -10,15 +10,16 @@ practices are covered below.
 
 ## Workflow Overview
 
-The workflow involves the following SLURM batch scripts and dependencies:
+The workflow involves the following SLURM batch scripts and dependencies, please
+make sure you don't have a conda environment loaded when you run the scripts:
 
 1. **`sbatch_data_retrieval.sh`**
    - Take less then an hour to run for most models.
    - Retrieves sequence data from UniProt if a protein FASTA file is not
      provided, and metabolite SMILES from ChemSpider.
    - Must be executed on the **IO partition**.
-   - Has inbuilt checkpointing so that you can re-run the scripts if they
-     exceed their WALL time or fail for some other reason.
+   - Has inbuilt application checkpointing so that you can re-run the scripts
+     if they exceed their WALL time or fail for some other reason.
 
 2. **`sbatch_uni_kp.sh`**
    - Executes the primary computation utilizing GPU resources.
@@ -47,9 +48,10 @@ Before running the scripts, ensure that:
   **GPU**, and **CPU**.
 - You have installed the CONDA prerequisites - best done using the install
   script [see the detailed README](../setup_scripts/README_HPC.md)
-- All required modules and dependencies for your Python scripts are preloaded in
-  the environment or within the batch scripts. This is most easily done by
-  sourcing the env.sh file configured by the HPC installation script.
+- Your INPUTS variable is set to point to the directory containing your model
+  XML file and your input paramaters YML file. If you are running python scripts
+  or a single species batch submission with the sbatch_submission.sh script,
+  then this is best set in the env.sh file.
 
 ---
 
@@ -64,11 +66,11 @@ Before running the scripts, ensure that:
   
 - **Master Submission Script**
   - `sbatch_submission.sh`: Facilitates sequential submission of the above
-      steps in the correct order and partitions.
+     steps in the correct order and partitions.
 
 - **Log Directory**
   - All SLURM logs are saved to a designated directory (`logs/`) to
-      assist in debugging.
+    assist in debugging.
 
 ---
 
@@ -96,8 +98,14 @@ Navigate to the directory containing the scripts and run:
 ```
 
 Note: each script will source the env.sh file from the root directory of your
-installation.
+installation. Please make sure you don't have a conda environment loaded when
+running the batch submission scripts.
 
 Note: there is an example multi-sample script `sbatch_multi_submission.sh` in
 case you have multiple analyses. It constrains the analysis so that only one IO
-process is run at a time in an attempt to not overload remote APIs.
+process is run at a time in an attempt to not overload remote APIs. Some points
+to note prior to running this:
+
+- Do not have a conda environment loaded when you run this script.
+- Make sure you don't have an INPUTS variable set in your env.sh file as this
+    will override the INPUTS variables set in this script for each species.
