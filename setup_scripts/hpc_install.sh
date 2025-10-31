@@ -66,8 +66,8 @@ if [ "$HOST" == "$GPU_HOST" ]; then
         setup_hpc_gpu_environment "$ENV_ID" "$PYTHON_VERSION" "$SCIKIT_LEARN_VERSION"
         mamba activate ${ENV_ID}_gpu
         setup_jupyter_kernel "$ENV_ID_gpu" "$ENV_ID_gpu"
-        download_model_data "$UNIKP"
     fi
+    download_model_data "$UNIKP"
 fi
 
 cat <<EOF >${PROJECT_ROOT}/env.sh
