@@ -146,8 +146,8 @@ def get_smiles_from_csv_apis(name):
         # If a match is found, return the 'smiles' for the match
         if not result.empty:
             try:
-                keggid = result.ilog[0]["kegg_metabolite_ID"]
-                smiles = result.ilog[0]["SMILES"]
+                keggid = result.iloc[0]["kegg_metabolite_ID"]
+                smiles = result.iloc[0]["SMILES"]
                 if DEBUG:
                     print(
                         f"DEBUG: SYNONYM keggid: {keggid} name: {name} smile: {smiles}"
