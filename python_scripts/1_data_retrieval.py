@@ -134,16 +134,20 @@ def process_futures(
 
 def get_smiles_from_csv_apis(name):
     try:
-        # Search in 'cmpdsynonym' column using vectorized operations for speed
-        mask = smiles_db["Metabolite_aliases"].str.contains(
-            rf"(?:^|\|){re.escape(name)}(?:\||$)", na=False, regex=True
-        )
-        result = smiles_db[mask]
+        # Get direct match if possible
+        if (smiles_db["BiGG_metabolite_name"] == name).any():
+            result = smiles_db[smiles_db["BiGG_metabolite_name"] == name]
+        else:
+            # Search in 'cmpdsynonym' column using vectorized operations for speed
+            mask = smiles_db["Metabolite_aliases"].str.contains(
+                rf"(?:^|\|){re.escape(name)}(?:\||$)", na=False, regex=True
+            )
+            result = smiles_db[mask]
         # If a match is found, return the 'smiles' for the match
         if not result.empty:
             try:
-                keggid = result["kegg_metabolite_ID"].values[0]
-                smiles = result["SMILES"].values[0]
+                keggid = result.ilog[0]["kegg_metabolite_ID"]
+                smiles = result.ilog[0]["SMILES"]
                 if DEBUG:
                     print(
                         f"DEBUG: SYNONYM keggid: {keggid} name: {name} smile: {smiles}"
