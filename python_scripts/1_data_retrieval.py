@@ -148,16 +148,22 @@ def get_smiles_from_csv_apis(name):
         if not result.empty:
             try:
                 keggid = result.iloc[0]["kegg_metabolite_ID"]
-                smiles = result.iloc[0]["SMILES"].split("|")[0]
+                smiles_value = result.iloc[0]["SMILES"]
+                if not pd.isna(smiles_value):
+                    smiles = str(smiles_value).split("|")[0]
+                else:
+                    smiles = "Compound not found"
                 if DEBUG:
                     print(
                         f"DEBUG: SYNONYM keggid: {keggid} name: {name} smile: {smiles}"
                     )
                 return smiles
             except Exception as e:
-                print(f"Error while processing 'cmpdsynonym' match: {e}")
+                print(
+                    f"Error while generating SMILES from Metabolite name: {e} - name: {name} SMILES: {result.iloc[0]['SMILES']}"
+                )
     except Exception as e:
-        print(f"Error while searching 'cmpdsynonym': {e}")
+        print(f"Error while searching for Metabolite name: {e}")
 
     try:
         # Looking for corresponding metabolite smiles using the PubChem API
