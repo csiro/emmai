@@ -135,8 +135,9 @@ def process_futures(
 def get_smiles_from_csv_apis(name):
     try:
         # Get direct match if possible
-        if (smiles_db["BiGG_metabolite_name"] == name).any():
-            result = smiles_db[smiles_db["BiGG_metabolite_name"] == name]
+        mask = smiles_db["BiGG_metabolite_name"] == name
+        if mask.any():
+            result = smiles_db[mask]
         else:
             # Search in 'cmpdsynonym' column using vectorized operations for speed
             mask = smiles_db["Metabolite_aliases"].str.contains(
