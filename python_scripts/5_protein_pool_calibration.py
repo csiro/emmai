@@ -23,9 +23,7 @@ media = data["media"]
 bounds = tuple(data["bounds"])
 
 ec_model = cobra.io.read_sbml_model(
-    os.path.join(
-        output_file_path, "output_GEMs", f"patched_ec_{modified_model_name}_fixed.xml"
-    )
+    os.path.join(output_file_path, "output_GEMs", f"ec_{modified_model_name}_mod2.xml")
 )
 
 ec_model.medium = media

@@ -16,7 +16,7 @@ output_file_path = os.path.join(inputs_path, data["output_file_path"])
 sbml_model = os.path.join(inputs_path, data["sbml_model"])
 modified_model_name = os.path.splitext(data["sbml_model"])[0]
 modified_model_file = os.path.join(
-    output_file_path, "output_GEMs", f"patched_ec_{modified_model_name}_fixed.xml"
+    output_file_path, "output_GEMs", f"ec_{modified_model_name}_mod2.xml"
 )
 os.makedirs(output_file_path, exist_ok=True)
 transporters = data["transporters"]
@@ -24,7 +24,7 @@ excluded_reactions = data["excluded_reactions"]
 
 logging.getLogger("cobra").setLevel(logging.ERROR)
 ec_model = cobra.io.read_sbml_model(
-    os.path.join(output_file_path, "output_GEMs", f"ec_{modified_model_name}_fixed.xml")
+    os.path.join(output_file_path, "output_GEMs", f"ec_{modified_model_name}_mod1.xml")
 )
 
 """Average reaction coefficient"""
