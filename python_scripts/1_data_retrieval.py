@@ -333,7 +333,7 @@ def process_metabolite_model(m):
             if DEBUG:
                 print(f"DEBUG: type(smiles)={type(smiles)}, smiles={smiles}")
             # Need to cater for different returns
-            smiles = "Compound not found" if pd.isna(smiles) else str(smiles).strip()
+            smiles = "Compound not found" if pd.isna(smiles) else str(smiles).strip().split('|')[0]
             if DEBUG:
                 print(f"DEBUG: name {name} smiles {smiles}")
 
