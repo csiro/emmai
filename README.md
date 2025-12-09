@@ -51,3 +51,13 @@ you are doing.
 
     iii. Or by running a combination of the batch scripts in hpc_scripts. See
     [See the HPC README](hpc_scripts/README.md) for details.
+
+## License
+
+This software is licensed under the GNU General Public License, version 3 (GPLv3).
+
+Copyright (C) 2025, CSIRO
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any later version.
