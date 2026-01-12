@@ -325,8 +325,8 @@ def process_uniprot_gene(gene):
 def process_metabolite_model(m):
     if m.id not in processed_metabolites:
         name = m.name
-        if m.formula is not None and m.formula in name:
-            name = name.replace(m.formula, "")
+        # if m.formula is not None and m.formula in name:
+            # name = name.replace(m.formula, "")
         try:
             # Looking for corresponding metabolite smiles in PubChem CSV / API and ChemSpider
             smiles = get_smiles_from_csv_apis(name)
