@@ -1,6 +1,6 @@
 ---
 # All paths are relative to this file
-sbml_model: "carved_PAO1.xml"
+sbml_model: "gapfilled_PAO1.xml"
 output_file_path: "outputs"
 protein_file_path: "protein.faa"
 
@@ -20,7 +20,6 @@ media:
   EX_co2_e: 1000.0
   EX_cobalt2_e: 1000.0
   EX_cu2_e: 1000.0
-  EX_fe2_e: 1000.0
   EX_fe3_e: 1000.0
   EX_h_e: 1000.0
   EX_h2o_e: 1000.0
