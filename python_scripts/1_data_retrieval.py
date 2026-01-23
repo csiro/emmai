@@ -238,6 +238,14 @@ def get_accession(query, target_id):
                         if synonym["value"] == target_id:
                             found = True
                             break
+
+                # Check in Locus name
+                if "orderedLocusNames" in gene:
+                    for entry in gene["orderedLocusNames"]:
+                        if "value" in entry and entry["value"] == target_id:
+                            found = True
+                            break
+                            
                 if found:
                     break
 
