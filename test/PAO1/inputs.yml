@@ -32,7 +32,6 @@ media:
   EX_pi_e: 1000.0
   EX_so4_e: 1000.0
   EX_zn2_e: 1000.0
-  EX_gal_e: 1000.0
 
 bounds:
   - -1.26
