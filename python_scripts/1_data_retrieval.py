@@ -19,7 +19,6 @@ DEBUG = False
 # pubchem_columns = ["cid", "cmpdname", "cmpdsynonym", "smiles"]
 # pubchemdb = pd.read_csv("PubChem_compound_all_pathways.csv", usecols=pubchem_columns)
 smiles_ref_db_columns: list[str] = [
-    "kegg_metabolite_ID",
     "Metabolite_aliases",
     "BiGG_metabolite_name",
     "SMILES",
@@ -147,16 +146,11 @@ def get_smiles_from_csv_apis(name):
         # If a match is found, return the 'smiles' for the match
         if not result.empty:
             try:
-                keggid = result.iloc[0]["kegg_metabolite_ID"]
                 smiles_value = result.iloc[0]["SMILES"]
                 if not pd.isna(smiles_value):
                     smiles = str(smiles_value).split("|")[0]
                 else:
                     smiles = "Compound not found"
-                if DEBUG:
-                    print(
-                        f"DEBUG: SYNONYM keggid: {keggid} name: {name} smile: {smiles}"
-                    )
                 return smiles
             except Exception as e:
                 print(
