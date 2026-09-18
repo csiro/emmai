@@ -16,8 +16,6 @@ from typing import List
 
 DEBUG = False
 
-# pubchem_columns = ["cid", "cmpdname", "cmpdsynonym", "smiles"]
-# pubchemdb = pd.read_csv("PubChem_compound_all_pathways.csv", usecols=pubchem_columns)
 smiles_ref_db_columns: list[str] = [
     "Metabolite_aliases",
     "BiGG_metabolite_name",
@@ -151,6 +149,10 @@ def get_smiles_from_csv_apis(name):
                     smiles = str(smiles_value).split("|")[0]
                 else:
                     smiles = "Compound not found"
+                if DEBUG:
+                    print(
+                        f"DEBUG: SYNONYM name: {name} smile: {smiles}"
+                    )
                 return smiles
             except Exception as e:
                 print(
@@ -280,10 +282,151 @@ def get_accession(query, target_id):
     return None, None, None, None
 
 
-# extra = ['umpH', 'ldtB', 'ldtD', 'ldtC', 'pfo', 'glsB',
-#          'ldtE', 'ldtA', 'wbbH', 'wzxB', 'umpG', 'fau',
-#          'gpmM'
-#         ]
+def normalize_gene_id(gene_id):
+    # Return a conservative comparison key for GEM/FASTA gene identifiers. The original identifier is never modified.
+
+    gene_id = str(gene_id).strip()
+
+    # Common SBML gene-product prefix. Remove only for comparison.
+    if gene_id.startswith("G_"):
+        gene_id = gene_id[2:]
+
+    # Treat common punctuation separators as equivalent for matching purposes.
+    gene_id = re.sub(r"[-.]", "_", gene_id)
+    gene_id = re.sub(r"_+", "_", gene_id)
+
+    return gene_id.lower()
+
+
+def reconcile_fasta_gene_ids(model_genes, fasta_records):
+    # Match FASTA records to GEM genes without changing either identifier.
+
+    record_exact = {}
+    for record in fasta_records:
+        record_exact.setdefault(record.id, []).append(record)
+
+    record_normalized = {}
+    for record in fasta_records:
+        key = normalize_gene_id(record.id)
+        record_normalized.setdefault(key, []).append(record)
+
+    matches = {}
+    match_types = {}
+    ambiguous = []
+    unmatched_genes = []
+    used_record_ids = set()
+
+    # Exact matches always take precedence.
+    unresolved_genes = []
+    for gene in model_genes:
+        candidates = record_exact.get(gene.id, [])
+        if len(candidates) == 1:
+            matches[gene.id] = candidates[0]
+            match_types[gene.id] = "exact"
+            used_record_ids.add(candidates[0].id)
+        elif len(candidates) > 1:
+            ambiguous.append(
+                {
+                    "GEM Gene ID": gene.id,
+                    "Normalized ID": normalize_gene_id(gene.id),
+                    "Candidate FASTA IDs": "|".join(r.id for r in candidates),
+                    "Reason": "duplicate exact FASTA ID",
+                }
+            )
+        else:
+            unresolved_genes.append(gene)
+
+    # Fall back to conservative punctuation/prefix normalisation.
+    for gene in unresolved_genes:
+        key = normalize_gene_id(gene.id)
+        candidates = [
+            record
+            for record in record_normalized.get(key, [])
+            if record.id not in used_record_ids
+        ]
+        if len(candidates) == 1:
+            matches[gene.id] = candidates[0]
+            match_types[gene.id] = "normalized"
+            used_record_ids.add(candidates[0].id)
+        elif len(candidates) > 1:
+            ambiguous.append(
+                {
+                    "GEM Gene ID": gene.id,
+                    "Normalized ID": key,
+                    "Candidate FASTA IDs": "|".join(r.id for r in candidates),
+                    "Reason": "ambiguous normalized match",
+                }
+            )
+        else:
+            unmatched_genes.append(gene)
+
+    unused_records = [r for r in fasta_records if r.id not in used_record_ids]
+    return matches, match_types, unmatched_genes, unused_records, ambiguous
+
+
+def write_gene_id_reconciliation_report(
+    report_path, model_genes, fasta_records, matches, match_types, ambiguous
+):
+    """Write a traceable QC report for GEM-to-FASTA identifier matching."""
+    ambiguous_by_gene = {row["GEM Gene ID"]: row for row in ambiguous}
+    matched_record_ids = {record.id for record in matches.values()}
+    report_rows = []
+
+    for gene in model_genes:
+        if gene.id in matches:
+            record = matches[gene.id]
+            report_rows.append(
+                {
+                    "Status": "matched",
+                    "Match type": match_types[gene.id],
+                    "GEM Gene ID": gene.id,
+                    "FASTA ID": record.id,
+                    "Normalized GEM ID": normalize_gene_id(gene.id),
+                    "Normalized FASTA ID": normalize_gene_id(record.id),
+                    "Details": "",
+                }
+            )
+        elif gene.id in ambiguous_by_gene:
+            row = ambiguous_by_gene[gene.id]
+            report_rows.append(
+                {
+                    "Status": "ambiguous",
+                    "Match type": "",
+                    "GEM Gene ID": gene.id,
+                    "FASTA ID": row["Candidate FASTA IDs"],
+                    "Normalized GEM ID": normalize_gene_id(gene.id),
+                    "Normalized FASTA ID": "",
+                    "Details": row["Reason"],
+                }
+            )
+        else:
+            report_rows.append(
+                {
+                    "Status": "unmatched GEM gene",
+                    "Match type": "",
+                    "GEM Gene ID": gene.id,
+                    "FASTA ID": "",
+                    "Normalized GEM ID": normalize_gene_id(gene.id),
+                    "Normalized FASTA ID": "",
+                    "Details": "",
+                }
+            )
+
+    for record in fasta_records:
+        if record.id not in matched_record_ids:
+            report_rows.append(
+                {
+                    "Status": "unused FASTA record",
+                    "Match type": "",
+                    "GEM Gene ID": "",
+                    "FASTA ID": record.id,
+                    "Normalized GEM ID": "",
+                    "Normalized FASTA ID": normalize_gene_id(record.id),
+                    "Details": "",
+                }
+            )
+
+    pd.DataFrame(report_rows).to_csv(report_path, index=False)
 
 
 def process_uniprot_gene(gene):
@@ -350,8 +493,13 @@ def process_metabolite_model(m):
 if protein_file_path:
     """Gene-sequence retrieval from fasta file"""
     file_to_update = os.path.join(output_file_path, "gene_sequence_data.csv")
+    reconciliation_path = os.path.join(
+        output_file_path, "gene_id_reconciliation.csv"
+    )
     columns: List[str] = [
         "Gene ID",
+        "FASTA ID",
+        "Match type",
         "Gene name",
         "Accession",
         "Sequence",
@@ -360,30 +508,57 @@ if protein_file_path:
         "Organism",
         "Gene reactions",
     ]
-    genes_df = pd.DataFrame(columns)
-    records = []
-    for record in SeqIO.parse(protein_file_path, "fasta"):
-        records.append(record)
-    genes = []
-    for gene in model.genes:
-        gene.id = gene.id.replace("_", ".")
-        genes.append(gene)
-    intersections = [
-        (record, gene)
-        for record in records
-        if any(record.id == gene.id for gene in genes)
-    ]
+
+    records = list(SeqIO.parse(protein_file_path, "fasta"))
+    genes = list(model.genes)
+
+    matches, match_types, unmatched_genes, unused_records, ambiguous = (
+        reconcile_fasta_gene_ids(genes, records)
+    )
+    write_gene_id_reconciliation_report(
+        reconciliation_path, genes, records, matches, match_types, ambiguous
+    )
+
+    exact_count = sum(1 for match_type in match_types.values() if match_type == "exact")
+    normalized_count = sum(
+        1 for match_type in match_types.values() if match_type == "normalized"
+    )
+    print(
+        "FASTA/GEM gene ID reconciliation: "
+        f"{len(genes)} GEM genes, {len(records)} FASTA records, "
+        f"{exact_count} exact matches, {normalized_count} normalized matches, "
+        f"{len(unmatched_genes)} unmatched GEM genes, "
+        f"{len(unused_records)} unused FASTA records, "
+        f"{len(ambiguous)} ambiguous matches."
+    )
+    print(f"Gene ID reconciliation report: {reconciliation_path}")
+
+    if ambiguous:
+        raise ValueError(
+            f"Found {len(ambiguous)} ambiguous GEM/FASTA gene ID matches. "
+            f"Inspect {reconciliation_path}; ambiguous matches are not guessed."
+        )
+
+    if not matches:
+        raise ValueError(
+            "No FASTA records could be matched to GEM genes. "
+            f"Inspect {reconciliation_path} for identifier differences."
+        )
 
     data = []
-    for r_g_pair in intersections:
-        record = r_g_pair[0]
-        gene = r_g_pair[1]
-        sequence = str(record.seq)
+    for gene in genes:
+        record = matches.get(gene.id)
+        if record is None:
+            continue
+        sequence = str(record.seq).rstrip("*")
         mass = molecular_weight(sequence, seq_type="protein")
         data.append(
             {
-                "Gene ID": record.id,
-                "Gene name": record.id,
+                # Keep the GEM identifier canonical throughout the EMMAi pipeline.
+                "Gene ID": gene.id,
+                "FASTA ID": record.id,
+                "Match type": match_types[gene.id],
+                "Gene name": gene.name,
                 "Accession": None,
                 "Sequence": sequence,
                 "Mass": mass,
@@ -392,7 +567,8 @@ if protein_file_path:
                 "Gene reactions": [r.id for r in gene.reactions],
             }
         )
-    genes_df = pd.DataFrame(data)
+
+    genes_df = pd.DataFrame(data, columns=columns)
     genes_df.to_csv(file_to_update, index=False)
 
 else:
@@ -484,14 +660,6 @@ for gene in model.genes:
     if gene.id == "spontaneous":
         continue
     gene_id = gene.id
-
-    # Regular expression pattern
-    pattern = r"^G_.*_\d+$"
-
-    # Check if the variable matches the pattern
-    if re.match(pattern, gene_id):
-        # Remove the 'G_' prefix and replace '_<integer>' with '.<integer>'
-        gene_id = re.sub(r"^G_(.*)_(\d+)$", r"\1.\2", gene_id)
 
     try:
         sequence = genes_df.loc[gene_id, "Sequence"]
