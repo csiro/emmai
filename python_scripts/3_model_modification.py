@@ -178,7 +178,7 @@ with ecmodel2:
 
             preliminary_kcats = {}
             for g in reaction.genes:
-                g_id = g.id.replace("_", ".")
+                g_id = g.id
                 if g_id in updated_sns.index:
                     subset = updated_sns.loc[g_id]
                     if isinstance(subset, pd.Series):
