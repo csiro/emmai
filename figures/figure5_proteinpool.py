@@ -5,7 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr, pearsonr
 
-WORKBOOK = Path("C:/Users/mol131/OneDrive - CSIRO/ecGEMs_Paper/Submission_files/Supplementary file 6.xlsx")
+WORKBOOK = Path("Supplementary file 6.xlsx")
 OUTPUT_PREFIX = Path("protein_pool_sensitivity")
 
 POOL_FACTORS = np.array([0.50, 0.75, 1.00, 1.25, 1.50])
